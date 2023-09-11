@@ -1,0 +1,18 @@
+services: queue: build: {
+	context:   "../"
+	acornfile: "../Acornfile"
+}
+
+containers: sender: {
+	build: context: "./sender"
+	consumes: ["queue"]
+	env: QUEUE_NAME: "@{services.queue.data.name}"
+	env: QUEUE_URL:  "@{services.queue.data.url}"
+}
+
+containers: receiver: {
+	build: context: "./receiver"
+	consumes: ["queue"]
+	env: QUEUE_NAME: "@{services.queue.data.name}"
+	env: QUEUE_URL:  "@{services.queue.data.url}"
+}
